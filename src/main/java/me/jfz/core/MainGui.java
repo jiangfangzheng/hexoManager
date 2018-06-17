@@ -6,10 +6,13 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import static me.jfz.core.GuiUtil.setFrameCenter;
 import static me.jfz.core.GuiUtil.setSystemStyle;
+import static me.jfz.core.Hexo.getHexoMdFileMap;
 import static me.jfz.util.DateUtil.getNowTimeMS;
 import static me.jfz.util.FileUtil.save;
 
@@ -24,7 +27,7 @@ public class MainGui {
     private static String nowFilePath;
     private static String nowFileString;
 
-    public static void gui(String[] fileNameList, Map<String, HexoMdFile> hexoMdFileMap) {
+    public static void gui(String[] fileNameList, List<String> filePathList) {
         setSystemStyle();
         JFrame jf = new JFrame("异想家Sandeepin的Hexo文章管理器 v1.0");
         jf.setSize(1200, 900);
@@ -101,6 +104,12 @@ public class MainGui {
                 // 输出选中的选项
                 for (int index : indices) {
                     System.out.println("选中: " + index + " = " + listModel.getElementAt(index));
+                    Map<String, HexoMdFile> hexoMdFileMap = null;
+                    try {
+                        hexoMdFileMap = getHexoMdFileMap(filePathList);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                     HexoMdFile hexoMdFile = hexoMdFileMap.get(listModel.getElementAt(index));
 //                    System.out.println(hexoMdFile.getContent());
                     textArea.setText(hexoMdFile.getContent());

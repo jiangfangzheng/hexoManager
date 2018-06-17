@@ -2,7 +2,9 @@ package me.jfz.core;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import static me.jfz.util.FileUtil.readFile;
 
@@ -74,5 +76,17 @@ public class Hexo {
             strings[start] = temp;
         }
         return strings;
+    }
+
+    // 获取所有文件的内容
+    public static Map<String, HexoMdFile> getHexoMdFileMap(List<String> filePathList) throws IOException {
+        Map<String, HexoMdFile> hexoMdFileMap = new TreeMap<>();
+        for (String fileName : filePathList) {
+            HexoMdFile hexoMdFile = fileToHexoMdFile(fileName);
+            String key = hexoMdFile.getDate() + "   " + hexoMdFile.getFileName();
+            hexoMdFileMap.put(key, hexoMdFile);
+//            System.out.println(hexoMdFile.getFileName() + "\t\t\t" + hexoMdFile.getDate());
+        }
+        return hexoMdFileMap;
     }
 }
